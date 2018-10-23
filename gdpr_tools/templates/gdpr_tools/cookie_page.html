@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<div id="CookieBanner">
+    <div class="container">
+        <h6>Cookie!</h6>
+    </div>
+    <div class="CookieButtonContainer">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="">{% trans "Save preferences" %}</button>
+        </form>
+    </div>
+</div>
