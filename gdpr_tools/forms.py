@@ -14,7 +14,7 @@ class ConsentForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(ConsentForm, self).__init__(*args, **kwargs)
-        for category in Category.objects.filter(type=Category.FACULTATIVE):
+        for category in Category.objects.get_facultative_categories():
             self.fields[category.name] = forms.ChoiceField(
                 choices=self.CHOICES,
                 widget=forms.RadioSelect
