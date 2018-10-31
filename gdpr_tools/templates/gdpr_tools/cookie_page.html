@@ -26,6 +26,16 @@
         </form>
       </div>
       <div id="cookielist" class="tab-pane fade" role="tabpanel" aria-labelledby="cookielist-tab">
+        {% for category in cookie_list %}
+        <ul>
+            <p>{{category.name}}</p>
+            {% for cookie in category.cookies.all %}
+              <li>
+                {{cookie.name}}
+              </li>
+            {% endfor %}
+        </ul>
+        {% endfor %}
       </div>
       <div id="cookiepolicy" class="tab-pane fade" role="tabpanel" aria-labelledby="cookiepolicy-tab">
       </div>
