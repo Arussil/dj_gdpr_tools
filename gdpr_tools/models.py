@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .validators import validate_file_extension
+from .managers import CategoryManager
 
 
 class Category(models.Model):
@@ -21,6 +22,16 @@ class Category(models.Model):
         max_length=2,
         choices=CATEGORY_TYPE_CHOICES
     )
+    active = models.BooleanField(_('Active'), default=True)
+
+    objects = CategoryManager()
+
+    def get_cookies():
+        """
+        Get all active cookie
+        for this category
+        """
+        return self.cookies.filter(active=True)
 
     class Meta():
         verbose_name = _('Category')
@@ -31,20 +42,17 @@ class Category(models.Model):
 
 class Cookie(models.Model):
     """
-    Register cookie and his code (a js file)
+    Register cookie for policy
     """
     name = models.CharField(_('Name'), max_length=100)
+    description = models.TextField(_('Description'))
     category = models.ForeignKey(
         Category,
         verbose_name = _('Category'),
         on_delete = models.CASCADE,
         related_name = 'cookies',
     )
-    file = models.FileField(
-        upload_to='cookie_scripts',
-        validators=[validate_file_extension],
-        blank=True,
-    )
+    active = models.BooleanField(_('Active'), default=True)
 
     class Meta():
         verbose_name = _('Cookie')
