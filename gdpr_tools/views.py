@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.http import is_safe_url
 
 from .forms import ConsentForm
+from .models import Category, Consent
 
 
 def cookie_consent(request, return_url):
@@ -22,7 +23,8 @@ def cookie_consent(request, return_url):
     else:
         form = ConsentForm()
     context = {
-        'form': form
+        'form': form,
+        'cookie_list': Category.objects.get_facultative_categories_and_cookies()
     }
     return render(
         request,
