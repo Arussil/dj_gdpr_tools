@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -64,9 +66,12 @@ class Cookie(models.Model):
 class Consent(models.Model):
     """
     Register user consent for Cookie Category
-    Using IP to store it so we can match
-    with third party like analytics and Facebook
+    As it's not easy to "prove consent" per GDPR new laws
+    we register the IP of the user and a UUID that's stored in
+    a cookie to have elements we can use to prove that the user
+    did an action to consent.
     """
+    uuid = models.UUIDField(editable=False)
     category = models.ForeignKey(
         Category,
         verbose_name = _('Category'),
@@ -82,4 +87,4 @@ class Consent(models.Model):
         verbose_name_plural = _('Consents')
 
     def __str__(self):
-        return self.ip
+        return f'{self.uuid}: {self.ip}'
